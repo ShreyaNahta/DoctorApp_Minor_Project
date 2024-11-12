@@ -1,3 +1,4 @@
+
 const nodemailer = require("nodemailer");
 const express = require('express');
 const cors = require('cors');
@@ -382,7 +383,7 @@ async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, available
             from: "lakshin2563@gmail.com", // Update with your email
             to: user.email, // Assume 'email' variable is set to recipient's email address
             subject: "Appointment Confirmation",
-            text: Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team,
+            text: `Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team`,
         };
   
         // Send email
@@ -968,5 +969,5 @@ app.delete('/delete_apmt', async (req, res) => {
 
 app.listen(port, () => {
     connect();
-    console.log(Server is running on port ${port});
+    console.log(`Server is running on port ${port}`);
 });

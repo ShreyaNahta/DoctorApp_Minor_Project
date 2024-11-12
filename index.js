@@ -1,5 +1,7 @@
+const nodemailer = require("nodemailer");
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -90,7 +92,7 @@ isApproved: Boolean,
 });
 
 
-
+let l=[]
 
 app.post('/login', async (req, res) => {
     const { p_name, p_pass } = req.body;
@@ -296,7 +298,36 @@ app.get('/getAllUsers', async (req, res) => {
     }
 });
 
-
+// Function to send registration email
+async function sendRegistrationEmail(email, username) {
+    try {
+        // Create a transporter with your SMTP server details
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "lakshin2563@gmail.com",
+              pass: "ypoe jrma lcfz pmej",
+            },
+        });
+  
+        // Email content
+        const mailOptions = {
+            from: "lakshin2563@gmail.com", // Update with your email
+            to: email,
+            subject: "Welcome to Your Doctor Appointment App!",
+            text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nThe Shreya Nahta,
+            `  ,
+         
+        };
+  
+        // Send email
+        const info = await transporter.sendMail(mailOptions);
+  
+        console.log("Email sent: " + info.response);
+    } catch (error) {
+        console.error("Error sending registration email:", error);
+    }
+  }
 app.post('/register', async (req, res) => {
     const { p_name,p_email, p_pass } = req.body;
 
@@ -315,7 +346,7 @@ app.post('/register', async (req, res) => {
 
         //console.log("mishra");
         
-      //  await sendRegistrationEmail(email, username);
+        await sendRegistrationEmail(p_email,p_name);
 
         return res.json({ success: true, message: 'Registration successful.' });
     } catch (error) {
@@ -330,10 +361,50 @@ app.post('/register', async (req, res) => {
 
 
 
+async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, availableTime, Appointment_Day, D_name) {
+
+    try {
+        // Create a transporter with your SMTP server details
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "lakshin2563@gmail.com",
+              pass: "ypoe jrma lcfz pmej",
+            },
+        });
+
+//"shreyanahta172004@gmail.com"
+        const user = await User.findOne({ username: P_name });
+        console.log(user);
+        console.log("hiiiiiiiiii");
+        // Email content for appointment booking confirmation
+        const mailOptions = {
+            from: "lakshin2563@gmail.com", // Update with your email
+            to: user.email, // Assume 'email' variable is set to recipient's email address
+            subject: "Appointment Confirmation",
+            text: Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team,
+        };
+  
+        // Send email
+        const info = await transporter.sendMail(mailOptions);
+  
+        console.log("Email sent: " + info.response);
+    } catch (error) {
+        console.error("Error sending appointment email:", error);
+    }
+}
+
 
 
 app.post('/bookapmt', async (req, res) => {
     const { P_name, Appointment_id, Appointment_Date, availableTime,Appointment_Day, D_name } = req.body;
+
+    l.push(P_name);
+    l.push(Appointment_id);
+    l.push(Appointment_Date);
+    l.push(availableTime);
+    l.push(Appointment_Day);
+    l.push( D_name);
 
     try {
         // Check if the username already exists
@@ -347,9 +418,11 @@ app.post('/bookapmt', async (req, res) => {
         // Create a new user
         const newUser = new BookedAppointment({ P_name: P_name, Appointment_id: Appointment_id, Appointment_Date: Appointment_Date, availableTime: availableTime, Appointment_Day: Appointment_Day, D_name: D_name, isApproved: false});
         await newUser.save();
-        
-      //  await sendRegistrationEmail(email, username);
 
+    
+        console.log("lakshin1");
+      //  await sendapmtEmail(P_name, Appointment_id,Appointment_Date,availableTime,Appointment_Day,D_name);
+        console.log("lakshin2");
         return res.json({ success: true, message: 'Appointment Booking in Progress' });
     } catch (error) {
         console.error(error);
@@ -783,6 +856,9 @@ app.post('/getDoctorsnew_app', async (req, res) => {
 app.post('/approveUserApmt', async (req, res) => {
     const { P_name, Appointment_id } = req.body;
     
+    console.log("nirma12345");
+    console.log(l[0]);
+
     try {
         // Check if the user has admin privileges (you may want to implement proper admin authentication)
         const isAdmin = true; // Replace with your admin authentication logic
@@ -806,7 +882,10 @@ app.post('/approveUserApmt', async (req, res) => {
        
         if (result.modifiedCount > 0  &&  result2.modifiedCount > 0) {
             // Event approval successful
-          
+
+            console.log("shreya1");
+            await sendapmtEmail(l[0], l[1],l[2],l[3],l[4],l[5]);
+          console.log("shreya2");
             res.json({ success: true, message: 'Appointment approval successful!' });
         } else {
             // No matching user or event found or no changes made
@@ -889,5 +968,5 @@ app.delete('/delete_apmt', async (req, res) => {
 
 app.listen(port, () => {
     connect();
-    console.log(`Server is running on port ${port}`);
+    console.log(Server is running on port ${port});
 });

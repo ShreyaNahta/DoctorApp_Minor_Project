@@ -306,14 +306,14 @@ async function sendRegistrationEmail(email, username) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "lakshin2563@gmail.com",
-              pass: "ypoe jrma lcfz pmej",
+              user: "patientservice.mp7@gmail.com",
+              pass: "nyqe kgub wwwk xxbj",
             },
         });
   
         // Email content
         const mailOptions = {
-            from: "lakshin2563@gmail.com", // Update with your email
+            from: "patientservice.mp7@gmail.com", // Update with your email
             to: email,
             subject: "Welcome to Your Doctor Appointment App!",
             text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nThe Shreya Nahta,
@@ -369,18 +369,18 @@ async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, available
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "lakshin2563@gmail.com",
-              pass: "ypoe jrma lcfz pmej",
+              user: "patientservice.mp7@gmail.com",
+              pass: "nyqe kgub wwwk xxbj",
             },
         });
 
 //"shreyanahta172004@gmail.com"
         const user = await User.findOne({ username: P_name });
-        console.log(user);
-        console.log("hiiiiiiiiii");
+        //console.log(user);
+        //console.log("hiiiiiiiiii");
         // Email content for appointment booking confirmation
         const mailOptions = {
-            from: "lakshin2563@gmail.com", // Update with your email
+            from: "patientservice.mp7@gmail.com", // Update with your email
             to: user.email, // Assume 'email' variable is set to recipient's email address
             subject: "Appointment Confirmation",
             text: `Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team`,
@@ -421,9 +421,9 @@ app.post('/bookapmt', async (req, res) => {
         await newUser.save();
 
     
-        console.log("lakshin1");
+        //console.log("lakshin1");
       //  await sendapmtEmail(P_name, Appointment_id,Appointment_Date,availableTime,Appointment_Day,D_name);
-        console.log("lakshin2");
+        //console.log("lakshin2");
         return res.json({ success: true, message: 'Appointment Booking in Progress' });
     } catch (error) {
         console.error(error);
@@ -447,7 +447,7 @@ app.delete('/deleteUser', async (req, res) => {
         // Check if the username exists
         const existingUser = await User.findOne({username: username });
 
-        console.log("hellooooooooooo1");
+        //console.log("hellooooooooooo1");
         
 
         if (!existingUser) {

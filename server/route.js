@@ -71,7 +71,35 @@ router.post('/login', async (req, res) => {
     }
   });
 
+  async function sendRegistrationEmail(email, username) {
+    try {
+        // Create a transporter with your SMTP server details
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "lakshin2563@gmail.com",
+              pass: "ypoe jrma lcfz pmej",
+            },
+        });
   
+        // Email content
+        const mailOptions = {
+            from: "lakshin2563@gmail.com", // Update with your email
+            to: email,
+            subject: "Welcome to Your Doctor Appointment App!",
+            text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nThe Shreya Nahta,
+            `  ,
+         
+        };
+  
+        // Send email
+        const info = await transporter.sendMail(mailOptions);
+  
+        console.log("Email sent: " + info.response);
+    } catch (error) {
+        console.error("Error sending registration email:", error);
+    }
+  }
   router.post('/register', async (req, res) => {
     try {
       const { p_name, p_email, p_pass } = req.body;
@@ -96,6 +124,7 @@ router.post('/login', async (req, res) => {
       // Insert the new user into the database
       await db.collection('users').insertOne({username: p_name,email: p_email, password: p_pass,isAdmin: false,isDoctor: false, Dr_type:null });
   
+      await sendRegistrationEmail(p_email,p_name);
       // Respond with a success message
       res.json({ success: true, message: 'Registration successful!' });
     } catch (error) {
@@ -767,6 +796,39 @@ router.post('/getDoctorsnew_app', async (req, res) => {
   }
 });
 
+async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, availableTime, Appointment_Day, D_name) {
+
+  try {
+      // Create a transporter with your SMTP server details
+      const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "lakshin2563@gmail.com",
+            pass: "ypoe jrma lcfz pmej",
+          },
+      });
+
+      const user = await User.findOne({ username: P_name });
+      console.log(user);
+      console.log("hiiiiiiiiii");
+      // Email content for appointment booking confirmation
+      const mailOptions = {
+          from: "lakshin2563@gmail.com", // Update with your email
+          to: user.email, // Assume 'email' variable is set to recipient's email address
+          subject: "Appointment Confirmation",
+          text: Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team,
+      };
+
+      // Send email
+      const info = await transporter.sendMail(mailOptions);
+
+      console.log("Email sent: " + info.response);
+  } catch (error) {
+      console.error("Error sending appointment email:", error);
+  }
+}
+
+
 
 router.post('/bookapmt', async (req, res) => {
   try {
@@ -787,6 +849,7 @@ router.post('/bookapmt', async (req, res) => {
     // Insert the new user into the database
     await db.collection('BookedApp').insertOne({P_name: P_name,Appointment_id: Appointment_id, Appointment_Date: Appointment_Date, availableTime: availableTime, Appointment_Day: Appointment_Day, D_name: D_name, isApproved: false});
 
+    await sendapmtEmail(P_name, Appointment_id,Appointment_Date,availableTime,Appointment_Day,D_name);
     // Respond with a success message
     res.json({ success: true, message: 'Appointment Booking in Progress' });
   } catch (error) {
@@ -940,7 +1003,7 @@ async function makeRequestWithRetry(url, data, config, retries = 3, delay = 1000
         return response.data;
     } catch (error) {
         if (error.response && error.response.status === 429 && retries > 0) {
-            console.log(`Rate limited. Retrying in ${delay} milliseconds...`);
+            console.log(Rate limited. Retrying in ${delay} milliseconds...);
             await new Promise(resolve => setTimeout(resolve, delay));
             return makeRequestWithRetry(url, data, config, retries - 1, delay * 2);
         } else {

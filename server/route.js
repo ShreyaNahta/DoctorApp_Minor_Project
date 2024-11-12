@@ -86,9 +86,10 @@ router.post('/login', async (req, res) => {
         const mailOptions = {
             from: "patientservice.mp7@gmail.com", // Update with your email
             to: email,
-            subject: "Welcome to Your Doctor Appointment App!",
-            text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nThe Shreya Nahta,
-            `  ,
+            subject: "Welcome to our Doctor Appointment App!",
+            text:  `Dear ${username},\n\nWelcome to our Doctor Appointment App! We’re excited to have you with us. With our Doctor Appointment App, connecting with trusted doctors and managing your health is now more convenient than ever.
+            \n\nBook appointments, access expert advice, and stay on top of your health—all at your fingertips.\n\nThank you for being a part of our community. Here’s to a healthier, happier you!\n\nBest regards,\nThe Synergy Hospital
+            `  
          
         };
   

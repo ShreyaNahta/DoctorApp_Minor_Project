@@ -816,7 +816,7 @@ async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, available
           from: "lakshin2563@gmail.com", // Update with your email
           to: user.email, // Assume 'email' variable is set to recipient's email address
           subject: "Appointment Confirmation",
-          text: Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team,
+          text: `Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team`,
       };
 
       // Send email
@@ -1003,7 +1003,7 @@ async function makeRequestWithRetry(url, data, config, retries = 3, delay = 1000
         return response.data;
     } catch (error) {
         if (error.response && error.response.status === 429 && retries > 0) {
-            console.log(Rate limited. Retrying in ${delay} milliseconds...);
+            console.log(`Rate limited. Retrying in ${delay} milliseconds...`);
             await new Promise(resolve => setTimeout(resolve, delay));
             return makeRequestWithRetry(url, data, config, retries - 1, delay * 2);
         } else {

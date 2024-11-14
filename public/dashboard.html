@@ -38,7 +38,7 @@
             font-weight: bold;
         }
         /* Button styling */
-        .btn-book {
+        .btn-book,.btn-pay {
             background-color: #af4c4c; /* Green */
             border: none;
             color: white;
@@ -526,31 +526,6 @@ th, td {
         document.addEventListener('DOMContentLoaded', function () {
 
 
-        // Add an event listener to the Open Chatbot button
-// const openChatbotBtn = document.getElementById('openChatbotBtn');
-// const chatbotContainer = document.getElementById('chatbotContainer');
-
-// // Function to load the chatbot page/modal
-// function openChatbot() {
-//     // Load the chatbot.html page/modal into the chatbotContainer div
-//     chatbotContainer.innerHTML = `<object type="text/html" data="chatbot_page.html" style="width:100%; height:200%;"></object>`;
-// }
-
-// // Add click event listener to the Open Chatbot button
-// openChatbotBtn.addEventListener('click', openChatbot);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -578,6 +553,8 @@ th, td {
     if (result.success) {
       console.log('Appointment is in queue , yet not Confirmed!!!');
       alert(result.message);
+
+      
      // window.location.reload(true);
       
     } else {
@@ -714,6 +691,7 @@ async function delete_apmt(P_name,Appointment_id,Appointment_Date,availableTime,
                 <th>Dr_Name</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Payment</th>
             </tr>
         `;
 
@@ -730,6 +708,7 @@ async function delete_apmt(P_name,Appointment_id,Appointment_Date,availableTime,
                 <td>${appointment.Appointment_Day}</td>
                 <td>${appointment.loggedInUser}</td>
                 <td><button type="button" class="btn-book">Book</button></td>
+                <td><button type="button" class="btn-pay">Pay</button></td>
             `;
 
 
@@ -770,14 +749,26 @@ async function delete_apmt(P_name,Appointment_id,Appointment_Date,availableTime,
 
 
 
-
-
-
-
-
-
-
         });
+        const button3 = row.querySelector('.btn-pay');
+
+        button3.addEventListener('click', function () {
+
+// console.log(appointment.Appointment_id);
+// console.log(appointment.Appointment_Date);
+// console.log(appointment.availableTime);
+// console.log(appointment.Appointment_Day);
+
+
+const url4 = `payment.html?script8=true&pat_name=${patientName}&Appid=${appointment.Appointment_id}&AppDate=${appointment.Appointment_Date}&AppTime=${appointment.availableTime}&AppDay=${appointment.Appointment_Day}&d_name=${appointment.loggedInUser}&app_day=${appointment.Appointment_Day}`;
+window.location.href = url4;    
+
+
+// book_apmt(patientName,appointment.Appointment_id,appointment.Appointment_Date,appointment.availableTime,appointment.Appointment_Day, username);
+
+
+
+});
 
         });
 

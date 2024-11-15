@@ -100,7 +100,7 @@
 
     <!-- Payment Checkout -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
+    <!-- <script>
         const urlParams = new URLSearchParams(window.location.search);
         const isScript8 = urlParams.get("script8") === "true";
 
@@ -147,6 +147,8 @@
         };
 
         var razorpayObject = new Razorpay(options);
+        console.log(razorpayObject);
+
 
         razorpayObject.on('payment.failed', function (response) {
             console.log(response);
@@ -157,7 +159,91 @@
             razorpayObject.open();
             e.preventDefault();
         }
+    </script> -->
+
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const isScript8 = urlParams.get("script8") === "true";
+    
+        if (isScript8) {
+            const appointmentDate = urlParams.get("AppDate");
+            const appointmentDay = urlParams.get("app_day");
+            const availableTime = urlParams.get("AppTime");
+            const doctorName = urlParams.get("d_name");
+            const patientName = sessionStorage.getItem("loggedInUser") || urlParams.get("patientName");
+    
+            // Display dynamic values on the page
+            document.getElementById("doctor-name").textContent = doctorName;
+            document.getElementById("appointment-date").textContent = `Appointment Date: ${appointmentDay}, ${appointmentDate}`;
+            document.getElementById("appointment-time").textContent = `Time: ${availableTime}`;
+            document.getElementById("patient-name").textContent = patientName;
+        }
+    
+        document.getElementById('pay-button').onclick = async function (e) {
+            e.preventDefault();
+    
+            // Fetch order details from the server
+            try {
+                const response = await fetch('/createOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: 50000, // Amount in paise
+                        currency: "INR",
+                        receipt: "order_rcptid_11",
+                        notes: {
+                            appointmentDate: document.getElementById("appointment-date").textContent,
+                            doctorName: document.getElementById("doctor-name").textContent,
+                            patientName: document.getElementById("patient-name").textContent,
+                        }
+                    }),
+                });
+    
+                const order = await response.json();
+    
+                // Initialize Razorpay options
+                var options = {
+                    "key": "rzp_test_8lEtdi5oYWoGD9",
+                    "amount": order.amount,
+                    "currency": order.currency,
+                    "name": "Doctor Appointment Booking",
+                    "description": `Consultation with Dr. ${document.getElementById("doctor-name").textContent}`,
+                    "image": "https://fastly.picsum.photos/id/67/200/300.jpg?hmac=GntzjckKE7-naeHFrr8ZEIIaj3Bm-Iln4f844p1Np08",
+                    "order_id": order.id,
+                    "handler": function (response) {
+                        alert("Payment Successful! You can book your appointment now.");
+                       // console.log(response);
+                        window.location.href = "dashboard.html";
+                    },
+                    "prefill": {
+                        "contact": "9876543210",
+                        "name": document.getElementById("patient-name").textContent,
+                        "email": "johndoe@gmail.com"
+                    },
+                    "notes": order.notes,
+                    "theme": {
+                        "color": "#2300a3"
+                    }
+                };
+    
+                var razorpayObject = new Razorpay(options);
+    
+                razorpayObject.on('payment.failed', function (response) {
+                    console.log(response);
+                    alert("Payment Failed. Please try again.");
+                });
+    
+                razorpayObject.open();
+            } catch (error) {
+                console.error("Error creating order:", error);
+                alert("Failed to initiate payment. Please try again.");
+            }
+        }
     </script>
+    
 </body>
 
 </html>

@@ -341,7 +341,7 @@ async function sendRegistrationEmail(email, username) {
             from: "patientservice.mp7@gmail.com", // Update with your email
             to: email,
             subject: "Welcome to our Doctor Appointment App!",
-            text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nSynergy multispecialist hospital
+            text:  `Dear ${username},\n\nWelcome to our Doctor Appointment App! We're thrilled to have you join our community.\n\nWith our Doctor Appointment App, you can connect with doctors anytime conveniently.\n\nBest regards,\nThe Synergy multispecialist hospital
             `  ,
          
         };

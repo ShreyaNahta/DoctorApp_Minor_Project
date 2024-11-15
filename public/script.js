@@ -51,6 +51,7 @@ if (!p_name || !p_pass) {
       }
       else {
 
+        sessionStorage.setItem('flag', 0);
         // Redirect to the patient dashboard
         window.location.href = "/dashboard.html";
       }

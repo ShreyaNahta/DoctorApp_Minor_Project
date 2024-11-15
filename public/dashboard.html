@@ -730,10 +730,17 @@ async function delete_apmt(P_name,Appointment_id,Appointment_Date,availableTime,
 
 
 
-
+            const flag= sessionStorage.getItem("flag") 
             
         const button2 = row.querySelector('.btn-book');
         button2.addEventListener('click', function () {
+
+            if(flag==0)
+        {
+                alert('Pay first!!!');
+        }
+        else
+        {
 
             console.log(appointment.Appointment_id);
             console.log(appointment.Appointment_Date);
@@ -747,7 +754,7 @@ async function delete_apmt(P_name,Appointment_id,Appointment_Date,availableTime,
 
             book_apmt(patientName,appointment.Appointment_id,appointment.Appointment_Date,appointment.availableTime,appointment.Appointment_Day, username);
 
-
+        }
 
         });
         const button3 = row.querySelector('.btn-pay');

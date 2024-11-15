@@ -214,6 +214,7 @@
                     "image": "https://fastly.picsum.photos/id/67/200/300.jpg?hmac=GntzjckKE7-naeHFrr8ZEIIaj3Bm-Iln4f844p1Np08",
                     "order_id": order.id,
                     "handler": function (response) {
+                        sessionStorage.setItem('flag', 1);
                         alert("Payment Successful! You can book your appointment now.");
                        // console.log(response);
                         window.location.href = "dashboard.html";
@@ -230,9 +231,10 @@
                 };
     
                 var razorpayObject = new Razorpay(options);
-    
+
                 razorpayObject.on('payment.failed', function (response) {
                     console.log(response);
+                      sessionStorage.setItem('flag', 0);
                     alert("Payment Failed. Please try again.");
                 });
     

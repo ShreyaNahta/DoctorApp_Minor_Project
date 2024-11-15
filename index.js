@@ -20,10 +20,10 @@ const Razorpay = require('razorpay');
 const razorpayInstance = new Razorpay({
 
     // Replace with your key_id
-    key_id: "rzp_test_xiNBYqDySM0NAk",
+    key_id: "rzp_test_8lEtdi5oYWoGD9",
 
     // Replace with your key_secret
-    key_secret: "B8VtawUpySyLCfXhFynDQZVE"
+    key_secret: "lqUA9AxQM0TtmyrN8FKbABcj"
 });
 
 
@@ -331,14 +331,14 @@ async function sendRegistrationEmail(email, username) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "patientservice.mp7@gmail.com",
-              pass: "nyqe kgub wwwk xxbj",
+              user: "lakshin2563@gmail.com",
+              pass: "ypoe jrma lcfz pmej",
             },
         });
   
         // Email content
         const mailOptions = {
-            from: "patientservice.mp7@gmail.com", // Update with your email
+            from: "lakshin2563@gmail.com", // Update with your email
             to: email,
             subject: "Welcome to Your Doctor Appointment App!",
             text:  `Dear ${username},\n\nWelcome to Your Doctor Appointment App! We're thrilled to have you join our community.\n\nWith Your Doctor Appointment App, you can connect with doctors.\n\nBest regards,\nThe Shreya Nahta,
@@ -394,8 +394,8 @@ async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, available
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "patientservice.mp7@gmail.com",
-              pass: "nyqe kgub wwwk xxbj",
+              user: "lakshin2563@gmail.com",
+              pass: "ypoe jrma lcfz pmej",
             },
         });
 
@@ -405,7 +405,7 @@ async function sendapmtEmail(P_name, Appointment_id, Appointment_Date, available
         console.log("hiiiiiiiiii");
         // Email content for appointment booking confirmation
         const mailOptions = {
-            from: "patientservice.mp7@gmail.com", // Update with your email
+            from: "lakshin2563@gmail.com", // Update with your email
             to: user.email, // Assume 'email' variable is set to recipient's email address
             subject: "Appointment Confirmation",
             text: `Dear ${P_name},\n\nYour appointment has been successfully booked!\n\nDetails of the appointment:\n- Appointment ID: ${Appointment_id}\n- Date: ${Appointment_Date}\n- Day: ${Appointment_Day}\n- Time: ${availableTime}\n- Doctor: Dr. ${D_name}\n\nPlease arrive 10 minutes before your scheduled time.\n\nThank you,\nYour Healthcare Team`,
